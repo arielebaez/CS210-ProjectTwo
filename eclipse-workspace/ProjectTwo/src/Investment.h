@@ -24,6 +24,27 @@
 class Investment {
 	// Public members, customarily member functions, are accessible outside of the class.
 	public:
+		/* Setters and Getters promote encapsulation by restricting direct access
+		 * to the class' data members from outside users of the class (e.g. main.cpp).
+		 * Getters return the value of the data member but do not modify member values,
+		 * while setters allow for manipulation of the data member's value.
+		 * Setters can use exception handling techniques
+		 * to validate the input and ensure the class is not put in a corrupt state.
+		 */
+
+		// Getters
+		/* Getters are usually defined as const to make clear that the data members
+		 * won't be changed.  This also promotes secure coding, as the compiler
+		 * will throw an error if the function modifies a data member (Programming Languages,
+		 * ZyBooks, 7.5: Mutators, accessors, private helpers).
+		 */
+		double getInvestmentAmount() const;
+		double getMonthlyDeposit() const;
+		double getInterestRate() const;
+		double getNumberYears() const;
+
+		// Setters
+
 
 
 	// Private members, customarily data members, are accessible only within the class itself.

@@ -5,7 +5,8 @@
  * Project Two Airgead Banking
  */
 
-/* The header file contains the class definition, including
+/*
+ * The header file contains the class definition, including
  * data members (fields) and member function declarations (method signatures).
  * (Programming Languages, ZyBooks, 7.8: Separate files for classes)
  */
@@ -24,7 +25,8 @@
 class Investment {
 	// Public members, customarily member functions, are accessible outside of the class.
 	public:
-		/* Setters and Getters promote encapsulation by restricting direct access
+		/*
+		 * Setters and Getters promote encapsulation by restricting direct access
 		 * to the class' data members from outside users of the class (e.g. main.cpp).
 		 * Getters return the value of the data member but do not modify member values,
 		 * while setters allow for manipulation of the data member's value.
@@ -33,7 +35,8 @@ class Investment {
 		 */
 
 		// Getters
-		/* Getters are usually defined as const to make clear that the data members
+		/*
+		 * Getters are usually defined as const to make clear that the data members
 		 * won't be changed.  This also promotes secure coding, as the compiler
 		 * will throw an error if the function modifies a data member (Programming Languages,
 		 * ZyBooks, 7.5: Mutators, accessors, private helpers).
@@ -44,12 +47,19 @@ class Investment {
 		double getNumberYears() const;
 
 		// Setters
-
-
+		/*
+		 * Per the standards, function parameters are named with a t_ prefix
+		 * to distinguish function parameters from other variables
+		 */
+		void setInvestmentAmount(double t_investmentAmount);
+		void setMonthlyDeposit(double t_monthlyDeposit);
+		void setInterestRate(double t_interestRate);
+		void setNumberYears(double t_numberYears);
 
 	// Private members, customarily data members, are accessible only within the class itself.
 	private:
-		/* Type double has been chosen to store the numeric variables pertaining
+		/*
+		 * Type double has been chosen to store the numeric variables pertaining
 		 * to the investment class and application.  Types double are, to this point,
 		 * in my studies, the best known data type type for representing currency and
 		 * interest rates (i.e. percentages or fractions).  The variable representing
@@ -59,13 +69,13 @@ class Investment {
 		 * Making every variable the same type also eases capturing user input.  A
 		 * single function can be built to prompt the user for input, capture, and
 		 * return the input provided, all of the same type.
+		 * Per the standards, private data members are named with an m_ prefix to distinguish
+		 * them from public data. The m_ stands for "member" data.
 		 */
 		double m_investmentAmount;
 		double m_monthlyDeposit;
 		double m_interestRate;
 		double m_numberYears;
 };
-
-
 
 #endif /* PROJECTTWO_SRC_INVESTMENT_H_ */

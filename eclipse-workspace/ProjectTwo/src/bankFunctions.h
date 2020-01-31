@@ -23,7 +23,9 @@
  */
 
 double getDouble(std::string t_prompt);			// Capture user input to pass to investment setters
-
-
+double inputInvestment(std::string t_prompt);	// Capture investment amount from the user
+double inputDeposit(std::string t_prompt);		// Capture the monthly deposit amount from the user
+double inputInterestRate(std::string t_prompt);	// Capture the interest rate from the user
+double inputNumberYears(std::string t_prompt);	// Capture the number of years from the user
 
 #endif /* PROJECTTWO_SRC_BANKFUNCTIONS_H_ */

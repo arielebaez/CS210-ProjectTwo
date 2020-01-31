@@ -19,7 +19,7 @@ using namespace std;
 /*
  * Function to prompt a user for numerical input and return the input
  * for storing in a variable to be passed into an investment object (e.g.
- * investment amount, monthly deposit, etc.
+ * investment amount, monthly deposit, etc.)
  */
 double getDouble(string t_prompt) {
 	bool validEntry;			// flag to drive exception handling
@@ -52,4 +52,36 @@ double getDouble(string t_prompt) {
         }
 	} while (!validEntry);
 	return userEntry;
+}
+
+/*
+ * Function to prompt a user for investment amount and return it
+ * for storing in a variable to be passed into an investment object.
+ * Uses exception handling to ensure the investment amount is greater than zero.
+ */
+double inputInvestment(string t_prompt) {
+	bool validEntry;			// flag to drive exception handling
+	double investmentAmount;	// store and return the investment amount
+
+	/*
+	 * Standard exception handling do-while loop.  See getDouble()
+	 * for additional details.
+	 */
+	do {
+		validEntry = true;		// assume initially the entry will be valid
+		try {
+			investmentAmount = getDouble(t_prompt);
+			if (investmentAmount <= 0) {
+				throw runtime_error("Invalid entry. Please enter an amount greater than $0.");
+			}
+		}
+		// Catch an investment amount 0 or less
+		catch(runtime_error& excpt) {
+			cout << excpt.what() << endl << endl;
+			validEntry = false;
+		}
+
+	} while(!validEntry);
+
+	return investmentAmount;
 }

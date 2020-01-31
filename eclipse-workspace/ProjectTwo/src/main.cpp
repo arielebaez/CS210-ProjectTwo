@@ -20,8 +20,8 @@ using namespace std;
 
 int main() {
 
-	double testDouble = getDouble("Enter a number please: ");
-	cout << testDouble << endl;
+	double invest = inputInvestment("Enter an investment please: ");
+	cout << "$" << invest << endl;
 
 	return 0;
 }

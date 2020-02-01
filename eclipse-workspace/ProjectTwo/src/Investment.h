@@ -26,6 +26,40 @@ class Investment {
 	// Public members, customarily member functions, are accessible outside of the class.
 	public:
 		/*
+		 * Constructors.  Method overloading is employed to allow two constructors-
+		 * the default and parameterized constructor.  When no constructor is defined,
+		 * a default, no-parameter constructor is called that initializes member
+		 * fields to the default value for their corresponding types.  If a parameterized
+		 * overloaded constructor is defined, a default should be defined as well.
+		 * The compiler will no longer implicitly define the default constructor,
+		 * so it must be explicitly defined. Additionally, its good to define a
+		 * default constructor for the investment object that initializes the
+		 * member fields to logical default values
+		 * (e.g. m_numberYears should be at least 1 and not 0 as 0 defeats
+		 * the purpose of investing.)
+		 */
+		// Default Constructor
+		Investment();
+
+		// Parameterized Constructor
+		/*
+		 * The program allows users to examine investments utilizing both
+		 * additional monthly deposits and no additional monthly deposits.
+		 * As such, capturing a deposit amount for object creation will
+		 * be optional, so that parameter should have a default value of 0.
+		 * When default value parameters are mixed with non-default value
+		 * parameters in the function definition, the default value parameters
+		 * should be listed last, as arguments correspond to order of placement
+		 * in the function call.  Sandwiching default value parameters in-between
+		 * non-default value parameters can lead to errors.
+		 */
+		Investment(double t_investmentAmount, double t_interestRate, double t_numberYears, double t_monthlyDeposit=0);
+
+		/*
+		 * FIXME: Destructor discussion and definition
+		 */
+
+		/*
 		 * Setters and Getters promote encapsulation by restricting direct access
 		 * to the class' data members from outside users of the class (e.g. main.cpp).
 		 * Getters return the value of the data member but do not modify member values,

@@ -20,8 +20,8 @@ using namespace std;
 
 int main() {
 
-	double invest = inputInvestment("Enter an investment please: ");
-	cout << "$" << invest << endl;
+	double invest = inputNumberYears("Enter the number of years please: ");
+	cout << "Years: " << invest << endl;
 
 	return 0;
 }

@@ -85,3 +85,99 @@ double inputInvestment(string t_prompt) {
 
 	return investmentAmount;
 }
+
+/*
+ * Function to prompt a user for deposit amount and return it
+ * for storing in a variable to be passed into an investment object.
+ * Uses exception handling to ensure the deposit is greater than zero.
+ */
+double inputDeposit(string t_prompt) {
+	bool validEntry;			// flag to drive exception handling
+	double depositAmount;		// store and return the deposit amount
+
+	/*
+	 * Standard exception handling do-while loop.  See getDouble()
+	 * for additional details.
+	 */
+	do {
+		validEntry = true;		// assume initially the entry will be valid
+		try {
+			depositAmount = getDouble(t_prompt);
+			if (depositAmount <= 0) {
+				throw runtime_error("Invalid entry. Please enter an amount greater than $0.");
+			}
+		}
+		// Catch a deposit amount 0 or less
+		catch(runtime_error& excpt) {
+			cout << excpt.what() << endl << endl;
+			validEntry = false;
+		}
+
+	} while(!validEntry);
+
+	return depositAmount;
+}
+
+/*
+ * Function to prompt a user for an interest rate and return it
+ * for storing in a variable to be passed into an investment object.
+ * Uses exception handling to ensure the interest rate is not negative.
+ */
+double inputInterestRate(string t_prompt) {
+	bool validEntry;			// flag to drive exception handling
+	double interestRate;		// store and return the interest rate
+
+	/*
+	 * Standard exception handling do-while loop.  See getDouble()
+	 * for additional details.
+	 */
+	do {
+		validEntry = true;		// assume initially the entry will be valid
+		try {
+			interestRate = getDouble(t_prompt);
+			if (interestRate < 0) {
+				throw runtime_error("Invalid entry. Please enter a non-negative interest rate.");
+			}
+		}
+		// Catch an interest rate less than 0
+		catch(runtime_error& excpt) {
+			cout << excpt.what() << endl << endl;
+			validEntry = false;
+		}
+
+	} while(!validEntry);
+
+	return interestRate;
+}
+
+/*
+ * Function to prompt a user for number of years and return it
+ * for storing in a variable to be passed into an investment object.
+ * Uses exception handling to ensure the number of years are 1 or more.
+ */
+double inputNumberYears(string t_prompt) {
+	bool validEntry;			// flag to drive exception handling
+	double numberYears;			// store and return the number of years
+
+	/*
+	 * Standard exception handling do-while loop.  See getDouble()
+	 * for additional details.
+	 */
+	do {
+		validEntry = true;		// assume initially the entry will be valid
+		try {
+			numberYears = getDouble(t_prompt);
+			if (numberYears < 1) {
+				throw runtime_error("Invalid entry. Please enter 1 year or more.");
+			}
+		}
+		// Catch years less than 1
+		catch(runtime_error& excpt) {
+			cout << excpt.what() << endl << endl;
+			validEntry = false;
+		}
+
+	} while(!validEntry);
+
+	return numberYears;
+}

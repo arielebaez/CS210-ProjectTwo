@@ -21,12 +21,15 @@
 #ifndef PROJECTTWO_SRC_INVESTMENT_H_
 #define PROJECTTWO_SRC_INVESTMENT_H_
 
+#include <memory>		// Library needed for smart pointers
+
 // Define the Investment class
 class Investment {
 	// Public members, customarily member functions, are accessible outside of the class.
 	public:
 		/*
-		 * Constructors.  Method overloading is employed to allow two constructors-
+		 * Constructors.  The function that is called when an object is created (e.g. new Object).
+		 * Method overloading is employed to allow two constructors-
 		 * the default and parameterized constructor.  When no constructor is defined,
 		 * a default, no-parameter constructor is called that initializes member
 		 * fields to the default value for their corresponding types.  If a parameterized
@@ -54,10 +57,6 @@ class Investment {
 		 * non-default value parameters can lead to errors.
 		 */
 		Investment(double t_investmentAmount, double t_interestRate, double t_numberYears, double t_monthlyDeposit=0);
-
-		/*
-		 * FIXME: Destructor discussion and definition
-		 */
 
 		/*
 		 * Setters and Getters promote encapsulation by restricting direct access
@@ -105,6 +104,7 @@ class Investment {
 		 * return the input provided, all of the same type.
 		 * Per the standards, private data members are named with an m_ prefix to distinguish
 		 * them from public data. The m_ stands for "member" data.
+		 *
 		 */
 		double m_investmentAmount;
 		double m_monthlyDeposit;

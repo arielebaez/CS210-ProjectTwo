@@ -12,6 +12,8 @@
  * (Programming Languages, ZyBooks, 7.8: Separate files for classes)
  */
 
+#include <iostream>
+#include <memory>
 #include "Investment.h"
 
 // Constructors - see Investment.h for detailed discussion
@@ -41,19 +43,19 @@ Investment::Investment(double t_investmentAmount, double t_interestRate, double 
 
 // Getters
 double Investment::getInvestmentAmount() const {
-	return m_investmentAmount;
+	return this->m_investmentAmount;
 }
 
 double Investment::getMonthlyDeposit() const {
-	return m_monthlyDeposit;
+	return this->m_monthlyDeposit;
 }
 
 double Investment::getInterestRate() const {
-	return m_interestRate;
+	return this->m_interestRate;
 }
 
 double Investment::getNumberYears() const {
-	return m_numberYears;
+	return this->m_numberYears;
 }
 
 // Setters

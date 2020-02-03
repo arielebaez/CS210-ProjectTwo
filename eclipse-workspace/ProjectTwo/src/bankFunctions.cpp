@@ -9,6 +9,7 @@
 #include <stdexcept>            // Library needed for the runtime_error object to be
                                 // thrown/caught in exception handling cases
 #include <string>				// C++ string class library
+#include "Investment.h"
 
 /*
  * namespaces provide scope to certain identifiers to avoid ambiguity and collision
@@ -180,4 +181,54 @@ double inputNumberYears(string t_prompt) {
 	} while(!validEntry);
 
 	return numberYears;
+}
+
+/*
+ * Function to print horizontal borders
+ */
+void printHorizontalBorder(int length, char printChar) {
+	for (int i = 0; i < length; ++i) {
+			cout << printChar;
+		}
+}
+
+/*
+ * Function to display the investment attributes (e.g. amount, years interest).
+ * Function uses overloading to determine output based on arguments provided
+ * in the function call.  The version without parameters is intended for the
+ * initial part of the program before any investment object is instantiated.
+ * The Investment object is passed in by reference to avoid an additional
+ * copy for performance savings and per the standards.
+ * No object data members are manipulated or returned from this function.
+ */
+void printInvestmentSnapshot() {
+	const int MENU_WIDTH = 35;			// Column width of the menu
+	string menuTitle = "Data Input";	// menu title
+	char menuChar = '*';
+	printHorizontalBorder(MENU_WIDTH, menuChar);
+	cout << endl;
+	printHorizontalBorder((((MENU_WIDTH - menuTitle.length()) / 2) - 1), menuChar);
+	cout << " " << menuTitle << " ";
+	printHorizontalBorder((((MENU_WIDTH - menuTitle.length()) / 2)), menuChar);
+	cout << endl;
+	cout << "Initial Investment Amount: " << endl;
+	cout << "Monthly Deposit: " << endl;
+	cout << "Annual Interest: " << endl;
+	cout << "Number of Years: " << endl;
+}
+
+void printInvestmentSnapshot(Investment& investment) {
+	const int MENU_WIDTH = 35;			// Column width of the menu
+	string menuTitle = "Data Input";	// menu title
+	char menuChar = '*';
+	printHorizontalBorder(MENU_WIDTH, menuChar);
+	cout << endl;
+	printHorizontalBorder((((MENU_WIDTH - menuTitle.length()) / 2) - 1), menuChar);
+	cout << " " << menuTitle << " ";
+	printHorizontalBorder((((MENU_WIDTH - menuTitle.length()) / 2)), menuChar);
+	cout << endl;
+	cout << "Initial Investment Amount: $" << investment.getInvestmentAmount() << endl;
+	cout << "Monthly Deposit: $" << investment.getMonthlyDeposit() << endl;
+	cout << "Annual Interest: " << investment.getInterestRate() << "%" << endl;
+	cout << "Number of Years: " << investment.getNumberYears() << endl;
 }

@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <memory>	// Library needed for smart pointers
 
 /*
  * A file that uses the class must include the .h file.  Its contents are
@@ -34,21 +35,17 @@ using namespace std;
 
 int main() {
 
-	Investment myInvestment(2500.23, 10.25, 25, 500.12);
+	// Capture the investment amount, interest rate, and number of years
+	//unique_ptr<double> investmentAmount(new double(inputInvestment("Enter initial investment amount: ")));
+	//unique_ptr<double> interestRate(new double(inputInterestRate("Enter rate of interest: ")));
+	//unique_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
 
-	cout << "Initial Investment: " << myInvestment.getInvestmentAmount() << endl;
-	cout << "Interest Rate: " << myInvestment.getInterestRate() << endl;
-	cout << "Number of Years: " << myInvestment.getNumberYears() << endl;
-	cout << "Monthly Deposit: " << myInvestment.getMonthlyDeposit() << endl;
+	Investment myInvestment(1000, 10, 10);
+	printInvestmentSnapshot();
 
-	myInvestment.setMonthlyDeposit(1005.63);
+	cout << "****************************************************************" << endl;
 
-	cout << "Initial Investment: " << myInvestment.getInvestmentAmount() << endl;
-	cout << "Interest Rate: " << myInvestment.getInterestRate() << endl;
-	cout << "Number of Years: " << myInvestment.getNumberYears() << endl;
-	cout << "Monthly Deposit: " << myInvestment.getMonthlyDeposit() << endl;
+	printInvestmentSnapshot(myInvestment);
 
 	return 0;
 }
-
-

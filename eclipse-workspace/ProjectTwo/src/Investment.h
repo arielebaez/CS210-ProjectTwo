@@ -21,8 +21,6 @@
 #ifndef PROJECTTWO_SRC_INVESTMENT_H_
 #define PROJECTTWO_SRC_INVESTMENT_H_
 
-#include <memory>		// Library needed for smart pointers
-
 // Define the Investment class
 class Investment {
 	// Public members, customarily member functions, are accessible outside of the class.

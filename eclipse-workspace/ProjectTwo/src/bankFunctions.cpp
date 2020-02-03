@@ -9,6 +9,7 @@
 #include <stdexcept>            // Library needed for the runtime_error object to be
                                 // thrown/caught in exception handling cases
 #include <string>				// C++ string class library
+#include <stdlib.h>
 #include "Investment.h"
 
 /*
@@ -231,4 +232,92 @@ void printInvestmentSnapshot(Investment& investment) {
 	cout << "Monthly Deposit: $" << investment.getMonthlyDeposit() << endl;
 	cout << "Annual Interest: " << investment.getInterestRate() << "%" << endl;
 	cout << "Number of Years: " << investment.getNumberYears() << endl;
+}
+
+/*
+ * Function to display growth output, both with and without a monthly deposit
+ * amount accounted for.  The Investment object is passed in
+ * by reference to avoid an additional copy for performance savings and per the standards.
+ * No object data members are manipulated or returned from this function.
+ */
+
+void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
+	const int MENU_WIDTH = 64;
+	string menuTitleNoDeposit = "Balance and Interest - No Additional Deposits";
+	string menuTitleWithDeposits = "Balance and Interest - With Additional Deposits";
+	string menuTitle;
+	if(withMonthly) {
+		menuTitle = menuTitleWithDeposits;
+	}
+	else {
+		menuTitle = menuTitleNoDeposit;
+	}
+	int menuTitleWhiteSpace = MENU_WIDTH - menuTitle.length();
+	string subTitleOne = "Year";
+	string subTitleTwo = "Year End Balance";
+	string subTitleThree = "Earned Interest";
+	int subTitlePadding = 2;
+	int subTitleWhiteSpace = 	MENU_WIDTH - (subTitleOne.length() +
+								subTitleTwo.length() + subTitleThree.length() + (subTitlePadding * 2));
+	char menuChar = '=';
+	char titleChar = ' ';
+	printHorizontalBorder(MENU_WIDTH, menuChar);
+	cout << endl;
+	printHorizontalBorder((menuTitleWhiteSpace / 2), titleChar);
+	cout << menuTitle;
+	printHorizontalBorder((menuTitleWhiteSpace / 2), titleChar);
+	cout << endl;
+	printHorizontalBorder(MENU_WIDTH, menuChar);
+	cout << endl;
+	printHorizontalBorder(subTitlePadding, titleChar);
+	cout << subTitleOne;
+	printHorizontalBorder((subTitleWhiteSpace / 2), titleChar);
+	cout << subTitleTwo;
+	printHorizontalBorder((subTitleWhiteSpace / 2), titleChar);
+	cout << subTitleThree;
+	printHorizontalBorder(subTitlePadding, titleChar);
+	cout << endl;
+	for (int i = 0; i < investment.getNumberYears(); ++i) {
+		int year = (i + 1);
+		double begBalance = investment.getInvestmentAmount();
+		double endBalance;
+		if(withMonthly) {
+			endBalance = investment.getInvestmentAmount();
+		}
+		else {
+			endBalance = investment.getInvestmentAmount();
+		}
+		double interestEarned = endBalance - begBalance;
+		/*
+		 *  using to_string() to convert numerical values to a string causes an error
+		 *  that appears to be a compiler bug, with the best solution being to
+		 *  downgrade the compiler.
+		 *  https://stackoverflow.com/questions/43294488/mingw-g-multiple-definition-of-vsnprintf-when-using-to-string
+		 *  So instead I convert to a string using itoa from stdlib
+		 *  http://www.cplusplus.com/reference/cstdlib/itoa/
+		 */
+		char buffer [20];
+		string yearString;
+		yearString = itoa((year), buffer, 10);
+		string endBalanceString;
+		endBalanceString = itoa((endBalance), buffer, 10);
+		string interestEarnedString;
+		interestEarnedString = itoa((interestEarned), buffer, 10);
+		int padding = 2;
+		int growthOutputWhiteSpace = 	MENU_WIDTH - (yearString.length()
+										+ endBalanceString.length() + interestEarnedString.length()
+										+ (padding * 2));
+		printHorizontalBorder(padding, titleChar);
+		cout << year;
+		printHorizontalBorder((growthOutputWhiteSpace / 3), titleChar);
+		cout << endBalance;
+		if((i + 1) >= 10) {
+			printHorizontalBorder((growthOutputWhiteSpace / 2) + 1, titleChar);
+		}
+		else {
+			printHorizontalBorder((growthOutputWhiteSpace / 2), titleChar);
+		}
+		cout << interestEarned;
+		cout << endl;
+	}
 }

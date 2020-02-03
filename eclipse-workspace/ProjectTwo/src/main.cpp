@@ -35,17 +35,18 @@ using namespace std;
 
 int main() {
 
-	// Capture the investment amount, interest rate, and number of years
+	/*
+	 *  Capture the investment amount, interest rate, and number of years, optional
+	 *  monthly deposit amount and create an investment object from the input provided.
+	 */
 	//unique_ptr<double> investmentAmount(new double(inputInvestment("Enter initial investment amount: ")));
 	//unique_ptr<double> interestRate(new double(inputInterestRate("Enter rate of interest: ")));
 	//unique_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
 
-	Investment myInvestment(1000, 10, 10);
-	printInvestmentSnapshot();
-
-	cout << "****************************************************************" << endl;
-
-	printInvestmentSnapshot(myInvestment);
+	Investment myInvestment(1000, 10, 25, 500);
+	printGrowth(myInvestment, false);
+	cout << endl;
+	printGrowth(myInvestment, true);
 
 	return 0;
 }

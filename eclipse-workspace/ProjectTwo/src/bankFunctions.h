@@ -40,6 +40,7 @@ double inputInterestRate(std::string t_prompt);						// Capture the interest rat
 double inputNumberYears(std::string t_prompt);						// Capture the number of years from the user
 void printInvestmentSnapshot();										// Print an empty snapshot
 void printInvestmentSnapshot(Investment& investment);				// Print a snapshot with investment attributes
+float round(float var);												// Round float to two decimal places
 void printGrowth(Investment& investment, bool withMonthly=false);	// Print growth, default is no additional deposits
 
 #endif /* PROJECTTWO_SRC_BANKFUNCTIONS_H_ */

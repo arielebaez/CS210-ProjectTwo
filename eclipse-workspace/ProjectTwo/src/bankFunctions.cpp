@@ -235,6 +235,19 @@ void printInvestmentSnapshot(Investment& investment) {
 }
 
 /*
+ * Function to round float to 2 decimal places for menu outout.
+ * Taken from https://www.geeksforgeeks.org/rounding-floating-point-number-two-decimal-places-c-c/
+ */
+float round(float var) {
+    // 37.66666 * 100 = 3766.66
+    // 3766.66 + .5 = 3767.16 for rounding off value
+    // then type cast to int so value is 3767
+    // then divided by 100 so the value converted into 37.67
+    float value = (int)(var * 100 + .5);
+    return (float)value / 100;
+}
+
+/*
  * Function to display growth output, both with and without a monthly deposit
  * amount accounted for.  The Investment object is passed in
  * by reference to avoid an additional copy for performance savings and per the standards.
@@ -243,6 +256,7 @@ void printInvestmentSnapshot(Investment& investment) {
 
 void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
 	const int MENU_WIDTH = 64;
+	const double MONTHS_IN_YEAR = 12.00;
 	string menuTitleNoDeposit = "Balance and Interest - No Additional Deposits";
 	string menuTitleWithDeposits = "Balance and Interest - With Additional Deposits";
 	string menuTitle;
@@ -254,11 +268,11 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	}
 	int menuTitleWhiteSpace = MENU_WIDTH - menuTitle.length();
 	string subTitleOne = "Year";
-	string subTitleTwo = "Year End Balance";
-	string subTitleThree = "Earned Interest";
+	string subTitleTwo = "Interest Earned";
+	string subTitleThree = "Year End Balance";
 	int subTitlePadding = 2;
-	int subTitleWhiteSpace = 	MENU_WIDTH - (subTitleOne.length() +
-								subTitleTwo.length() + subTitleThree.length() + (subTitlePadding * 2));
+	const int ITEMIZED_ITEM_LENGTH = 10;
+	const int subTitleWhiteSpace = 	MENU_WIDTH - ((ITEMIZED_ITEM_LENGTH * 3) + (subTitlePadding * 2));
 	char menuChar = '=';
 	char titleChar = ' ';
 	printHorizontalBorder(MENU_WIDTH, menuChar);
@@ -275,19 +289,37 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	cout << subTitleTwo;
 	printHorizontalBorder((subTitleWhiteSpace / 2), titleChar);
 	cout << subTitleThree;
-	printHorizontalBorder(subTitlePadding, titleChar);
 	cout << endl;
+	double begBalance = investment.getInvestmentAmount();
 	for (int i = 0; i < investment.getNumberYears(); ++i) {
 		int year = (i + 1);
-		double begBalance = investment.getInvestmentAmount();
+		double interestRate = investment.getInterestRate() / 100.00;
+		double interestEarned;
+		double totalInterest;
 		double endBalance;
+		double monthEndBalance;
 		if(withMonthly) {
-			endBalance = investment.getInvestmentAmount();
+			interestEarned = 0;
+			totalInterest = 0;
+			interestRate = interestRate / MONTHS_IN_YEAR;
+			for (int i = 0; i < MONTHS_IN_YEAR; ++i) {
+				// Assumes deposit is made at the beginning of the month
+				begBalance += investment.getMonthlyDeposit();
+				interestEarned = (begBalance * (1 + interestRate)) - begBalance;
+				monthEndBalance = begBalance + interestEarned;
+				begBalance = monthEndBalance;
+				totalInterest += interestEarned;
+			}
 		}
 		else {
-			endBalance = investment.getInvestmentAmount();
+			totalInterest = (begBalance * (1 + interestRate)) - begBalance;
 		}
-		double interestEarned = endBalance - begBalance;
+		if(withMonthly) {
+			endBalance = begBalance;
+		}
+		else {
+			endBalance = begBalance + totalInterest;
+		}
 		/*
 		 *  using to_string() to convert numerical values to a string causes an error
 		 *  that appears to be a compiler bug, with the best solution being to
@@ -301,23 +333,25 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 		yearString = itoa((year), buffer, 10);
 		string endBalanceString;
 		endBalanceString = itoa((endBalance), buffer, 10);
-		string interestEarnedString;
-		interestEarnedString = itoa((interestEarned), buffer, 10);
+		string totalInterestString;
+		totalInterestString = itoa((totalInterest), buffer, 10);
 		int padding = 2;
 		int growthOutputWhiteSpace = 	MENU_WIDTH - (yearString.length()
-										+ endBalanceString.length() + interestEarnedString.length()
+										+ endBalanceString.length() + totalInterestString.length()
 										+ (padding * 2));
 		printHorizontalBorder(padding, titleChar);
 		cout << year;
-		printHorizontalBorder((growthOutputWhiteSpace / 3), titleChar);
-		cout << endBalance;
+		printHorizontalBorder((growthOutputWhiteSpace / 2), titleChar);
+		cout << totalInterest;
+		//FIXME: Why is this needed?
 		if((i + 1) >= 10) {
-			printHorizontalBorder((growthOutputWhiteSpace / 2) + 1, titleChar);
+			printHorizontalBorder(((growthOutputWhiteSpace / 2) - 1), titleChar);
 		}
 		else {
 			printHorizontalBorder((growthOutputWhiteSpace / 2), titleChar);
 		}
-		cout << interestEarned;
+		cout << endBalance;
 		cout << endl;
+		begBalance = endBalance;
 	}
 }

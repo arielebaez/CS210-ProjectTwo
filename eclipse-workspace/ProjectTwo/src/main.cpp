@@ -43,7 +43,8 @@ int main() {
 	//unique_ptr<double> interestRate(new double(inputInterestRate("Enter rate of interest: ")));
 	//unique_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
 
-	Investment myInvestment(1000, 10, 25, 500);
+	Investment myInvestment(1, 5, 5, 50);
+
 	printGrowth(myInvestment, false);
 	cout << endl;
 	printGrowth(myInvestment, true);

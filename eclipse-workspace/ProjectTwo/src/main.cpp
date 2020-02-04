@@ -51,10 +51,9 @@ int main() {
 	printGrowth(myInvestment, false);
 	cout << endl;
 	printGrowth(myInvestment, true);
-
-	// FIXME: Enter a loop for additional options
-
-	cout << "Goodbye.";
-
+	cout << endl << endl << endl;
+	// Display an options menu, lop through user actions until user opts to quit
+	investmentSimulation(myInvestment);
+	cout << endl << "Goodbye.";
 	return 0;
 }

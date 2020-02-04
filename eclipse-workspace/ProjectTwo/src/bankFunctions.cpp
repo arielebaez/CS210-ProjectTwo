@@ -230,6 +230,7 @@ void printHorizontalBorder(int length, char printChar) {
 	for (int i = 0; i < length; ++i) {
 			cout << printChar;
 		}
+	return;
 }
 
 /*
@@ -257,6 +258,7 @@ void printInvestmentSnapshot() {
 	cout << "Number of Years: " << endl;
 	system("pause");		// wait for user input to continue
 							// added bonus of displaying 'Press any key to continue...'
+	return;
 }
 
 void printInvestmentSnapshot(Investment& investment) {
@@ -274,6 +276,7 @@ void printInvestmentSnapshot(Investment& investment) {
 	cout << "Annual Interest: " << investment.getInterestRate() << "%" << endl;
 	cout << "Number of Years: " << investment.getNumberYears() << endl;
 	system("pause");
+	return;
 }
 
 /*
@@ -416,4 +419,106 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 		cout << "$" << setprecision(2) << fixed << endBalance;
 		cout << endl;
 	}
+	return;			// clear the stack even though return type is void
+}
+
+/*
+ * Funciton to display options menu, called by investmentSimulation.
+ */
+void printOptions() {
+	string optionsMenu = 	"What would you like to do?\n"
+							"1 - Change Initial Investment Amount\n"
+							"2 - Change Monthly Deposit Amount\n"
+							"3 - Change Interest Rate\n"
+							"4 - Change Investment Duration (years)\n"
+							"5 - Print Investment Growth - No Deposit\n"
+							"6 - Print Investment Growth - With Deposits\n"
+							"7 - Quit.";
+	const int MENU_WIDTH = 50;
+	const char MENU_CHAR = '*';
+	printHorizontalBorder(MENU_WIDTH, MENU_CHAR);
+	cout << endl;
+	cout << optionsMenu;
+	cout << endl;
+	printHorizontalBorder(MENU_WIDTH, MENU_CHAR);
+	cout << endl;
+	return;
+}
+
+/*
+ * Function to loop through menu functions to allow user to take additional action.
+ * Per the spec, the user The user should be able to test different monthly deposit
+ * amounts, interest rates, and lengths of time to see how increases and decreases
+ * impact their investment growth.
+ */
+void investmentSimulation(Investment& investment) {
+
+	bool validEntry;			// flag to drive exception handling
+	string userEntryAsString;	// store user input to convert to double
+	int userEntry = 0;			// store user input as int to drive case statement
+								// initialize to zero to drive initial loop
+	/*
+	 * Loop until user opts to quit (e.g. userEntry == 7).  A while loop is
+	 * used because the number of loop iterations is unknown and is driven by user input.
+	 */
+	while (userEntry != 7) {
+		/*
+		 * Exception handling to validate user entry.
+		 * A do-while loop is used because the prompt
+		 * should be displayed at least once and assume the user
+		 * makes a valid selection. Don't initiate a loop until an exception is thrown.
+		 */
+		do {
+			validEntry = true;		// assume initially the entry will be valid
+			try {
+				printOptions();
+				cin >> userEntryAsString;
+				userEntry = stoi(userEntryAsString);	// stoi is a quick was to convert a string to an int
+				if((userEntry < 1) || (userEntry > 7)) {
+					throw runtime_error("Invalid entry. Please enter a number between 1 and 7");
+				}
+			}
+			// Catch an invalid argument (e.g. user enters a string in lieu of int)
+			catch(invalid_argument& excpt) {
+				cout << "Invalid entry type, please enter a number." << endl << endl;
+				validEntry = false;
+			}
+			catch (runtime_error& excpt) {
+				cout << excpt.what() << endl << endl;
+				validEntry = false;
+			}
+		} while(!validEntry);
+		cout << endl;
+		/*
+		 * The user option chosen dictates the path taken.  Loop until user quits.
+		 * A while loop is used because the number of iterations is unknown at loop entry.
+		 * A switch statement is used in lieu of if-else because there is a larger set of options.
+		 * The switch statement keeps the code a bit cleaner here.
+		 */
+			switch(userEntry) {
+				case 1:
+					cout << "FIXME: Change Investment amount" << endl;
+					break;		// if a case is executed, break out of the switch statement so other cases aren't executed
+				case 2:
+					cout << "FIXME: Change Monthly Deposit amount" << endl;
+					break;
+				case 3:
+					cout << "FIXME: Change Interest Rate" << endl;
+					break;
+				case 4:
+					cout << "FIXME: Change Investment Duration" << endl;
+					break;
+				case 5:
+					printGrowth(investment, false);
+					cout << endl << endl;
+					break;
+				case 6:
+					printGrowth(investment, true);
+					cout << endl << endl;
+					break;
+				default:		// path taken if no other cases are executed, this will capture choice to quit program
+					break;
+		}
+	}
+	return;
 }

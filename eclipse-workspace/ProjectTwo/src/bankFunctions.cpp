@@ -10,6 +10,7 @@
                                 // thrown/caught in exception handling cases
 #include <string>				// C++ string class library
 #include <stdlib.h>
+#include <iomanip>				// set precision for numerical calculation output
 #include "Investment.h"
 
 /*
@@ -235,28 +236,16 @@ void printInvestmentSnapshot(Investment& investment) {
 }
 
 /*
- * Function to round float to 2 decimal places for menu outout.
- * Taken from https://www.geeksforgeeks.org/rounding-floating-point-number-two-decimal-places-c-c/
- */
-float round(float var) {
-    // 37.66666 * 100 = 3766.66
-    // 3766.66 + .5 = 3767.16 for rounding off value
-    // then type cast to int so value is 3767
-    // then divided by 100 so the value converted into 37.67
-    float value = (int)(var * 100 + .5);
-    return (float)value / 100;
-}
-
-/*
  * Function to display growth output, both with and without a monthly deposit
  * amount accounted for.  The Investment object is passed in
  * by reference to avoid an additional copy for performance savings and per the standards.
  * No object data members are manipulated or returned from this function.
  */
 
-void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
-	const int MENU_WIDTH = 64;
+void printGrowth(Investment investment, bool withMonthly/* default is false */) {
+	const int MENU_WIDTH = 75;		// Should be divisible by 3 for equal column widths
 	const double MONTHS_IN_YEAR = 12.00;
+	int columnWidth = MENU_WIDTH / 3;
 	string menuTitleNoDeposit = "Balance and Interest - No Additional Deposits";
 	string menuTitleWithDeposits = "Balance and Interest - With Additional Deposits";
 	string menuTitle;
@@ -266,39 +255,63 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	else {
 		menuTitle = menuTitleNoDeposit;
 	}
-	int menuTitleWhiteSpace = MENU_WIDTH - menuTitle.length();
-	string subTitleOne = "Year";
-	string subTitleTwo = "Interest Earned";
-	string subTitleThree = "Year End Balance";
-	int subTitlePadding = 2;
-	const int ITEMIZED_ITEM_LENGTH = 10;
-	const int subTitleWhiteSpace = 	MENU_WIDTH - ((ITEMIZED_ITEM_LENGTH * 3) + (subTitlePadding * 2));
+	int menuTitleWhiteSpace = MENU_WIDTH - menuTitle.length();	// Title marquee whitespace
+	string headerOne = "Year";
+	string headerTwo = "Interest Earned";
+	string headerThree = "Year End Balance";
+	// Determine whitespace for each column title based on column title length
+	int columnOneWhitespace = columnWidth - headerOne.length();
+	int columnTwoWhitespace = columnWidth - headerTwo.length();
+	int columnThreeWhitespace = columnWidth - headerThree.length();
 	char menuChar = '=';
-	char titleChar = ' ';
+	char outputChar = ' ';
+	// Print title top border
 	printHorizontalBorder(MENU_WIDTH, menuChar);
 	cout << endl;
-	printHorizontalBorder((menuTitleWhiteSpace / 2), titleChar);
+	// Print title leading whitespace
+	printHorizontalBorder((menuTitleWhiteSpace / 2), outputChar);
+	// Print menu title
 	cout << menuTitle;
-	printHorizontalBorder((menuTitleWhiteSpace / 2), titleChar);
+	// Print title trailing whitespace
+	printHorizontalBorder((menuTitleWhiteSpace / 2), outputChar);
 	cout << endl;
+	// Print title bottom border
 	printHorizontalBorder(MENU_WIDTH, menuChar);
 	cout << endl;
-	printHorizontalBorder(subTitlePadding, titleChar);
-	cout << subTitleOne;
-	printHorizontalBorder((subTitleWhiteSpace / 2), titleChar);
-	cout << subTitleTwo;
-	printHorizontalBorder((subTitleWhiteSpace / 2), titleChar);
-	cout << subTitleThree;
+	// Print column one leading whitespace
+	printHorizontalBorder((columnOneWhitespace / 2), outputChar);
+	// Print column one header
+	cout << headerOne;
+	// Print column one trailing whitespace
+	printHorizontalBorder((columnOneWhitespace / 2), outputChar);
+	// Print column two leading whitespace
+	printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
+	// Print column two header
+	cout << headerTwo;
+	// Print column two trailing whitespace
+	printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
+	// Print column three leading whitespace
+	printHorizontalBorder((columnThreeWhitespace / 2), outputChar);
+	// Print column three header
+	cout << headerThree;
+	// Print column three trailing whitespace
+	printHorizontalBorder((columnThreeWhitespace / 2), outputChar);
 	cout << endl;
+	// Prior to calculating and outputting growth, level set initial investment
+	// to use as the beginning balance for the investment growth output.
 	double begBalance = investment.getInvestmentAmount();
+	// Loop through the number of years for the investment.
+	// For each year, calculate the interest earned, ending balance, and output to screen.
+	// Logic is drives whether to include monthly deposits based on the flag
+	// passed during the function call.
 	for (int i = 0; i < investment.getNumberYears(); ++i) {
-		int year = (i + 1);
+		int year = (i + 1);		// Add 1 to i for the appropriate year output
 		double interestRate = investment.getInterestRate() / 100.00;
 		double interestEarned;
 		double totalInterest;
 		double endBalance;
 		double monthEndBalance;
-		if(withMonthly) {
+		if(withMonthly) {		// Include monthly deposits in growth output
 			interestEarned = 0;
 			totalInterest = 0;
 			interestRate = interestRate / MONTHS_IN_YEAR;
@@ -311,10 +324,13 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 				totalInterest += interestEarned;
 			}
 		}
-		else {
+		else {					// Do not include monthly deposits
 			totalInterest = (begBalance * (1 + interestRate)) - begBalance;
 		}
 		if(withMonthly) {
+			// The above loop sets the beginning balance to the end of period
+			// balance to start the next iteration.  This will set begBalance to
+			// the true end of year balance at loop exit.
 			endBalance = begBalance;
 		}
 		else {
@@ -328,30 +344,35 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 		 *  So instead I convert to a string using itoa from stdlib
 		 *  http://www.cplusplus.com/reference/cstdlib/itoa/
 		 */
+
 		char buffer [20];
 		string yearString;
 		yearString = itoa((year), buffer, 10);
-		string endBalanceString;
-		endBalanceString = itoa((endBalance), buffer, 10);
 		string totalInterestString;
 		totalInterestString = itoa((totalInterest), buffer, 10);
-		int padding = 2;
-		int growthOutputWhiteSpace = 	MENU_WIDTH - (yearString.length()
-										+ endBalanceString.length() + totalInterestString.length()
-										+ (padding * 2));
-		printHorizontalBorder(padding, titleChar);
+		string endBalanceString;
+		endBalanceString = itoa((endBalance), buffer, 10);
+		columnOneWhitespace = columnWidth - yearString.length();
+		columnTwoWhitespace = columnWidth - totalInterestString.length();
+		columnThreeWhitespace = columnWidth - endBalanceString.length();
+		// Output the year count, interest earned, and year end balance
+		// in that order per whitespace calculations.
+		// Print column one leading whitespace
+		printHorizontalBorder((columnOneWhitespace / 2), outputChar);
+		// Print column one output
 		cout << year;
-		printHorizontalBorder((growthOutputWhiteSpace / 2), titleChar);
-		cout << totalInterest;
-		//FIXME: Why is this needed?
-		if((i + 1) >= 10) {
-			printHorizontalBorder(((growthOutputWhiteSpace / 2) - 1), titleChar);
-		}
-		else {
-			printHorizontalBorder((growthOutputWhiteSpace / 2), titleChar);
-		}
-		cout << endBalance;
+		// Print column one trailing whitespace
+		printHorizontalBorder((columnOneWhitespace / 2), outputChar);
+		// Print column two leading whitespace
+		printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
+		// Print column two output, fixed to 2 decimal places
+		cout << "$" << setprecision(2) << fixed << totalInterest;
+		// Print column two trailing whitespace
+		printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
+		// Print column three leading whitespace
+		printHorizontalBorder((columnThreeWhitespace / 2), outputChar);	// FIXME: Had to hard code this for alignment
+		// Print column three output, fixed to 2 decimal places
+		cout << "$" << setprecision(2) << fixed << endBalance;
 		cout << endl;
-		begBalance = endBalance;
 	}
 }

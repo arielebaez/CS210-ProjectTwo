@@ -44,7 +44,6 @@ int main() {
 	//unique_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
 
 	Investment myInvestment(1, 5, 5, 50);
-
 	printGrowth(myInvestment, false);
 	cout << endl;
 	printGrowth(myInvestment, true);

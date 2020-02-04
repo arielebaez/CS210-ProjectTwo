@@ -186,6 +186,44 @@ double inputNumberYears(string t_prompt) {
 }
 
 /*
+ * Prompt the user to enter a deposit amount if desired
+ */
+double grabDepositAmout() {
+	bool validEntry;				// flag to drive exception handling
+	double depositAmount;			// store and return the number of years
+	char userEntry;
+
+	/*
+	 * Standard exception handling do-while loop.  See getDouble()
+	 * for additional details.
+	 */
+	do {
+		validEntry = true;		// assume initially the entry will be valid
+		try {
+			cout << "Would you like to add a monthly deposit (Y/N)? ";
+			cin >> userEntry;
+			if ((userEntry != 'N') && (userEntry != 'n') && (userEntry != 'Y') && (userEntry != 'y')) {
+				throw runtime_error("Invalid entry. Please enter Y or N.");
+			}
+		}
+		// Catch invalid input
+		catch(runtime_error& excpt) {
+			cout << excpt.what() << endl << endl;
+			validEntry = false;
+		}
+
+	} while(!validEntry);
+
+	if((userEntry == 'Y') || (userEntry == 'y')) {
+		depositAmount = inputDeposit("Please enter your deposit amount.");
+	}
+	else {
+		depositAmount = 0;
+	}
+	return depositAmount;
+}
+
+/*
  * Function to print horizontal borders
  */
 void printHorizontalBorder(int length, char printChar) {

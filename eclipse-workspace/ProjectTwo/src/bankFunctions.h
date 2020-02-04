@@ -38,6 +38,8 @@ double inputInvestment(std::string t_prompt);						// Capture investment amount 
 double inputDeposit(std::string t_prompt);							// Capture the monthly deposit amount from the user
 double inputInterestRate(std::string t_prompt);						// Capture the interest rate from the user
 double inputNumberYears(std::string t_prompt);						// Capture the number of years from the user
+double grabDepositAmout();											// Prompt user for and return a depsit amount
+void printHorizontalBorder(int length, char printChar);
 void printInvestmentSnapshot();										// Print an empty snapshot
 void printInvestmentSnapshot(Investment& investment);				// Print a snapshot with investment attributes
 void printGrowth(Investment investment, bool withMonthly=false);	// Print growth, default is no additional deposits

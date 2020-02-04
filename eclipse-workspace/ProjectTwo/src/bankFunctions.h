@@ -42,6 +42,6 @@ double grabDepositAmout();											// Prompt user for and return a depsit amou
 void printHorizontalBorder(int length, char printChar);
 void printInvestmentSnapshot();										// Print an empty snapshot
 void printInvestmentSnapshot(Investment& investment);				// Print a snapshot with investment attributes
-void printGrowth(Investment investment, bool withMonthly=false);	// Print growth, default is no additional deposits
+void printGrowth(Investment& investment, bool withMonthly=false);	// Print growth, default is no additional deposits
 
 #endif /* PROJECTTWO_SRC_BANKFUNCTIONS_H_ */

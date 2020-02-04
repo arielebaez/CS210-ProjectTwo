@@ -255,6 +255,8 @@ void printInvestmentSnapshot() {
 	cout << "Monthly Deposit: " << endl;
 	cout << "Annual Interest: " << endl;
 	cout << "Number of Years: " << endl;
+	system("pause");		// wait for user input to continue
+							// added bonus of displaying 'Press any key to continue...'
 }
 
 void printInvestmentSnapshot(Investment& investment) {
@@ -271,6 +273,7 @@ void printInvestmentSnapshot(Investment& investment) {
 	cout << "Monthly Deposit: $" << investment.getMonthlyDeposit() << endl;
 	cout << "Annual Interest: " << investment.getInterestRate() << "%" << endl;
 	cout << "Number of Years: " << investment.getNumberYears() << endl;
+	system("pause");
 }
 
 /*
@@ -280,12 +283,12 @@ void printInvestmentSnapshot(Investment& investment) {
  * No object data members are manipulated or returned from this function.
  */
 
-void printGrowth(Investment investment, bool withMonthly/* default is false */) {
+void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
 	const int MENU_WIDTH = 75;		// Should be divisible by 3 for equal column widths
 	const double MONTHS_IN_YEAR = 12.00;
 	int columnWidth = MENU_WIDTH / 3;
 	string menuTitleNoDeposit = "Balance and Interest - No Additional Deposits";
-	string menuTitleWithDeposits = "Balance and Interest - With Additional Deposits";
+	string menuTitleWithDeposits = "Balance and Interest - With Monthly Deposits";
 	string menuTitle;
 	if(withMonthly) {
 		menuTitle = menuTitleWithDeposits;

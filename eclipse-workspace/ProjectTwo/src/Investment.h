@@ -57,12 +57,24 @@ class Investment {
 		Investment(double t_investmentAmount, double t_interestRate, double t_numberYears, double t_monthlyDeposit=0);
 
 		/*
+		 * Destructors.  A destructor is called to free memory when the object goes out of
+		 * scope.  Like constructors, a default destructor is implicitly called by the compiler.
+		 * An explicit destructor definition would be needed if particular member variables
+		 * or member methods allocated heap space that would not be freed by implicitly calling
+		 * the default constructor.  That is not the case for this class, so no explicit
+		 * destructor definition is needed.
+		 */
+
+		/*
 		 * Setters and Getters promote encapsulation by restricting direct access
 		 * to the class' data members from outside users of the class (e.g. main.cpp).
 		 * Getters return the value of the data member but do not modify member values,
 		 * while setters allow for manipulation of the data member's value.
 		 * Setters can use exception handling techniques
 		 * to validate the input and ensure the class is not put in a corrupt state.
+		 * For this program, the exception handling is defined in the functions used
+		 * to capture user input to set to the member fields.  In general, however,
+		 * employing exception handling in the setter function is an option.
 		 */
 
 		// Getters
@@ -91,7 +103,7 @@ class Investment {
 	private:
 		/*
 		 * Type double has been chosen to store the numeric variables pertaining
-		 * to the investment class and application.  Types double are, to this point,
+		 * to the investment class and application.  Double types are, to this point
 		 * in my studies, the best known data type type for representing currency and
 		 * interest rates (i.e. percentages or fractions).  The variable representing
 		 * the number of years is also type double to avoid potential truncation issues.
@@ -102,7 +114,6 @@ class Investment {
 		 * return the input provided, all of the same type.
 		 * Per the standards, private data members are named with an m_ prefix to distinguish
 		 * them from public data. The m_ stands for "member" data.
-		 *
 		 */
 		double m_investmentAmount;
 		double m_monthlyDeposit;

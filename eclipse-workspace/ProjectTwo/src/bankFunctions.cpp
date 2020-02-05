@@ -452,7 +452,9 @@ void printOptions() {
  * amounts, interest rates, and lengths of time to see how increases and decreases
  * impact their investment growth.
  */
-void investmentSimulation(Investment& investment, std::shared_ptr<double> investmentAmount) {
+void investmentSimulation	(Investment& investment, std::shared_ptr<double> investmentAmount,
+							std::shared_ptr<double> interestRate, std::shared_ptr<double> numberYears,
+							std::shared_ptr<double> depositAmount) {
 
 	bool validEntry;			// flag to drive exception handling
 	string userEntryAsString;	// store user input to convert to double

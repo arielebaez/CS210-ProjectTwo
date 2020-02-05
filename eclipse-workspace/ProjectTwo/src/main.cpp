@@ -47,9 +47,9 @@ int main() {
 	printInvestmentSnapshot();
 	// Capture user input for amounts and instantiate object
 	shared_ptr<double> investmentAmount(new double(inputInvestment("Enter initial investment amount: ")));
-	unique_ptr<double> interestRate(new double(inputInterestRate("Enter rate of interest: ")));
-	unique_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
-	unique_ptr<double> depositAmount(new double(grabDepositAmout()));
+	shared_ptr<double> interestRate(new double(inputInterestRate("Enter rate of interest: ")));
+	shared_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
+	shared_ptr<double> depositAmount(new double(grabDepositAmout()));
 	Investment myInvestment(*investmentAmount, *interestRate, *numberYears, *depositAmount);
 	// Display the snapshot with updated information
 	printInvestmentSnapshot(myInvestment);
@@ -59,7 +59,7 @@ int main() {
 	printGrowth(myInvestment, true);
 	cout << endl << endl << endl;
 	// Display an options menu, loop through user actions until user opts to quit
-	investmentSimulation(myInvestment, investmentAmount);
+	investmentSimulation(myInvestment, investmentAmount, interestRate, numberYears, depositAmount);
 	cout << endl << "Goodbye.";
 	return 0;
 }

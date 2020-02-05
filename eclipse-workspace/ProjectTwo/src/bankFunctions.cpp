@@ -34,7 +34,7 @@ double getDouble(string t_prompt) {
 	 * Exception handling to validate user entry.
 	 * A do-while loop is used because the prompt
 	 * should be displayed at least once and assume the user
-	 * makes a valid selection. Don't initiate a loop until an exception is thrown.
+	 * enters valid input. Don't initiate a loop until an exception is thrown.
 	 */
 	do {
 		validEntry = true;		// assume initially the entry will be valid
@@ -225,7 +225,8 @@ double grabDepositAmout() {
 }
 
 /*
- * Function to print horizontal borders
+ * Function to print horizontal borders.  Loop through the length
+ * given and print the character given for that many horizontal columns.
  */
 void printHorizontalBorder(int length, char printChar) {
 	for (int i = 0; i < length; ++i) {
@@ -239,9 +240,10 @@ void printHorizontalBorder(int length, char printChar) {
  * Function uses overloading to determine output based on arguments provided
  * in the function call.  The version without parameters is intended for the
  * initial part of the program before any investment object is instantiated.
- * The Investment object is passed in by reference to avoid an additional
- * copy for performance savings and per the standards.
- * No object data members are manipulated or returned from this function.
+ * The Investment object in the overloaded function
+ * is passed in by reference to avoid an additional copy for performance savings
+ * and per the standards.  No object data members are manipulated or returned
+ * from this function.
  */
 void printInvestmentSnapshot() {
 	const int MENU_WIDTH = 35;			// Column width of the menu
@@ -285,10 +287,10 @@ void printInvestmentSnapshot(Investment& investment) {
  * amount accounted for.  The Investment object is passed in
  * by reference to avoid an additional copy for performance savings and per the standards.
  * No object data members are manipulated or returned from this function.
- * NOTE: The alignment on this output is not perfect once years and amounts start to get large,
+ * NOTE: The alignment on this output is not perfect once years and/or amounts start to get large,
  * I tried several approaches of varying complexity and ultimately reduced it to cout << "\t\t"
  * which is still imperfect.  As such, alignment of the column output for year, earned interest,
- * and end balance may be off target for certsin test cases.  This is a known bug.
+ * and end balance may be off target for certain test cases.  This is a known bug.
  */
 
 void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
@@ -329,15 +331,15 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	// Print column three header
 	cout << "\t\t" << headerThree;
 	cout << endl;
-	// Prior to calculating and outputting growth, level set initial investment
+	// Prior to calculating and outputting growth, level set investment amount
 	// to use as the beginning balance for the investment growth output.
 	double begBalance = investment.getInvestmentAmount();
 	// Loop through the number of years for the investment.
-	// For each year, calculate the interest earned, ending balance, and output to screen.
-	// Logic is drives whether to include monthly deposits based on the flag
+	// For each year, calculate the interest earned, ending balance, and output results.
+	// Logic drives whether to include monthly deposits based on the flag
 	// passed during the function call.
 	for (int i = 0; i < investment.getNumberYears(); ++i) {
-		int year = (i + 1);		// Add 1 to i for the appropriate year output
+		int year = (i + 1);		// Add 1 to i for the appropriate year output display
 		double interestRate = investment.getInterestRate() / 100.00;
 		double interestEarned;
 		double totalInterest;
@@ -348,7 +350,7 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 			totalInterest = 0;
 			interestRate = interestRate / MONTHS_IN_YEAR;
 			for (int i = 0; i < MONTHS_IN_YEAR; ++i) {
-				// Assumes deposit is made at the beginning of the month
+				// Assumes deposit is made at the beginning of the month per spec given
 				begBalance += investment.getMonthlyDeposit();
 				interestEarned = (begBalance * (1 + interestRate)) - begBalance;
 				monthEndBalance = begBalance + interestEarned;
@@ -367,7 +369,7 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 		}
 		else {
 			endBalance = begBalance + totalInterest;
-			begBalance = endBalance;	// set beginning balance for next iteration
+			begBalance = endBalance;	// set beginning balance equal to ending balance for next iteration
 		}
 		// Print column one output
 		cout << "\t" << year;
@@ -433,7 +435,7 @@ void investmentSimulation	(Investment& investment, std::shared_ptr<double> inves
 			try {
 				printOptions();
 				cin >> userEntryAsString;
-				userEntry = stoi(userEntryAsString);	// stoi is a quick was to convert a string to an int
+				userEntry = stoi(userEntryAsString);	// stoi is a quick way to convert a string to an int
 				if((userEntry < 1) || (userEntry > 7)) {
 					throw runtime_error("Invalid entry. Please enter a number between 1 and 7");
 				}

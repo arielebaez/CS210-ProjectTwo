@@ -380,6 +380,7 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 		}
 		else {
 			endBalance = begBalance + totalInterest;
+			begBalance = endBalance;	// set beginning balance for next iteration
 		}
 		/*
 		 *  using to_string() to convert numerical values to a string causes an error
@@ -424,7 +425,7 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 }
 
 /*
- * Funciton to display options menu, called by investmentSimulation.
+ * Function to display options menu, called by investmentSimulation.
  */
 void printOptions() {
 	string optionsMenu = 	"What would you like to do?\n"
@@ -510,13 +511,25 @@ void investmentSimulation	(Investment& investment, std::shared_ptr<double> inves
 				case 2:	// Change the deposit amount
 					// Print the current Snapshot
 					printInvestmentSnapshot(investment);
+					*depositAmount = inputDeposit("Enter new deposit amount: ");
+					investment.setMonthlyDeposit(*depositAmount);
+					// Print the new snapshot
+					printInvestmentSnapshot(investment);
 					break;
 				case 3:	// Change the interest rate
 					// Print the current Snapshot
 					printInvestmentSnapshot(investment);
+					*interestRate = inputInterestRate("Enter new interest rate: ");
+					investment.setInterestRate(*interestRate);
+					// Print the new snapshot
+					printInvestmentSnapshot(investment);
 					break;
 				case 4:	// Change the investment duration
 					// Print the current Snapshot
+					printInvestmentSnapshot(investment);
+					*numberYears = inputNumberYears("Enter new duration: ");
+					investment.setNumberYears(*numberYears);
+					// Print the new snapshot
 					printInvestmentSnapshot(investment);
 					break;
 				case 5:

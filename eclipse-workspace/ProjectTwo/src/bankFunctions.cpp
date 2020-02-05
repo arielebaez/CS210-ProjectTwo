@@ -499,17 +499,25 @@ void investmentSimulation	(Investment& investment, std::shared_ptr<double> inves
 		 * The switch statement keeps the code a bit cleaner here.
 		 */
 			switch(userEntry) {
-				case 1:
-					cout << "FIXME: Change Investment amount" << endl;
+				case 1:	// Change the investment amount
+					// Print the current Snapshot
+					printInvestmentSnapshot(investment);
+					*investmentAmount = inputInvestment("Enter new investment amount: ");
+					investment.setInvestmentAmount(*investmentAmount);
+					// Print the new snapshot
+					printInvestmentSnapshot(investment);
 					break;		// if a case is executed, break out of the switch statement so other cases aren't executed
-				case 2:
-					cout << "FIXME: Change Monthly Deposit amount" << endl;
+				case 2:	// Change the deposit amount
+					// Print the current Snapshot
+					printInvestmentSnapshot(investment);
 					break;
-				case 3:
-					cout << "FIXME: Change Interest Rate" << endl;
+				case 3:	// Change the interest rate
+					// Print the current Snapshot
+					printInvestmentSnapshot(investment);
 					break;
-				case 4:
-					cout << "FIXME: Change Investment Duration" << endl;
+				case 4:	// Change the investment duration
+					// Print the current Snapshot
+					printInvestmentSnapshot(investment);
 					break;
 				case 5:
 					printGrowth(investment, false);

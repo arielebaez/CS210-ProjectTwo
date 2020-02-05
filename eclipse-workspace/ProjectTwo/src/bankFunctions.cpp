@@ -285,6 +285,10 @@ void printInvestmentSnapshot(Investment& investment) {
  * amount accounted for.  The Investment object is passed in
  * by reference to avoid an additional copy for performance savings and per the standards.
  * No object data members are manipulated or returned from this function.
+ * NOTE: The alignment on this output is not perfect once years and amounts start to get large,
+ * I tried several approaches of varying complexity and ultimately reduced it to cout << "\t\t"
+ * which is still imperfect.  As such, alignment of the column output for year, earned interest,
+ * and end balance may be off target for certsin test cases.  This is a known bug.
  */
 
 void printGrowth(Investment& investment, bool withMonthly/* default is false */) {

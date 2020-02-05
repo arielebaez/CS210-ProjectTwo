@@ -288,9 +288,8 @@ void printInvestmentSnapshot(Investment& investment) {
  */
 
 void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
-	const int MENU_WIDTH = 75;		// Should be divisible by 3 for equal column widths
+	const int MENU_WIDTH = 75;
 	const double MONTHS_IN_YEAR = 12.00;
-	int columnWidth = MENU_WIDTH / 3;
 	string menuTitleNoDeposit = "Balance and Interest - No Additional Deposits";
 	string menuTitleWithDeposits = "Balance and Interest - With Monthly Deposits";
 	string menuTitle;
@@ -304,10 +303,6 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	string headerOne = "Year";
 	string headerTwo = "Interest Earned";
 	string headerThree = "Year End Balance";
-	// Determine whitespace for each column title based on column title length
-	int columnOneWhitespace = columnWidth - headerOne.length();
-	int columnTwoWhitespace = columnWidth - headerTwo.length();
-	int columnThreeWhitespace = columnWidth - headerThree.length();
 	char menuChar = '=';
 	char outputChar = ' ';
 	// Print title top border
@@ -323,24 +318,12 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	// Print title bottom border
 	printHorizontalBorder(MENU_WIDTH, menuChar);
 	cout << endl;
-	// Print column one leading whitespace
-	printHorizontalBorder((columnOneWhitespace / 2), outputChar);
 	// Print column one header
-	cout << headerOne;
-	// Print column one trailing whitespace
-	printHorizontalBorder((columnOneWhitespace / 2), outputChar);
-	// Print column two leading whitespace
-	printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
+	cout << "\t" << headerOne;
 	// Print column two header
-	cout << headerTwo;
-	// Print column two trailing whitespace
-	printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
-	// Print column three leading whitespace
-	printHorizontalBorder((columnThreeWhitespace / 2), outputChar);
+	cout << "\t\t" << headerTwo;
 	// Print column three header
-	cout << headerThree;
-	// Print column three trailing whitespace
-	printHorizontalBorder((columnThreeWhitespace / 2), outputChar);
+	cout << "\t\t" << headerThree;
 	cout << endl;
 	// Prior to calculating and outputting growth, level set initial investment
 	// to use as the beginning balance for the investment growth output.
@@ -382,43 +365,12 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 			endBalance = begBalance + totalInterest;
 			begBalance = endBalance;	// set beginning balance for next iteration
 		}
-		/*
-		 *  using to_string() to convert numerical values to a string causes an error
-		 *  that appears to be a compiler bug, with the best solution being to
-		 *  downgrade the compiler.
-		 *  https://stackoverflow.com/questions/43294488/mingw-g-multiple-definition-of-vsnprintf-when-using-to-string
-		 *  So instead I convert to a string using itoa from stdlib
-		 *  http://www.cplusplus.com/reference/cstdlib/itoa/
-		 */
-
-		char buffer [20];
-		string yearString;
-		yearString = itoa((year), buffer, 10);
-		string totalInterestString;
-		totalInterestString = itoa((totalInterest), buffer, 10);
-		string endBalanceString;
-		endBalanceString = itoa((endBalance), buffer, 10);
-		columnOneWhitespace = columnWidth - yearString.length();
-		columnTwoWhitespace = columnWidth - totalInterestString.length();
-		columnThreeWhitespace = columnWidth - endBalanceString.length();
-		// Output the year count, interest earned, and year end balance
-		// in that order per whitespace calculations.
-		// Print column one leading whitespace
-		printHorizontalBorder((columnOneWhitespace / 2), outputChar);
 		// Print column one output
-		cout << year;
-		// Print column one trailing whitespace
-		printHorizontalBorder((columnOneWhitespace / 2), outputChar);
-		// Print column two leading whitespace
-		printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
+		cout << "\t" << year;
 		// Print column two output, fixed to 2 decimal places
-		cout << "$" << setprecision(2) << fixed << totalInterest;
-		// Print column two trailing whitespace
-		printHorizontalBorder((columnTwoWhitespace / 2), outputChar);
-		// Print column three leading whitespace
-		printHorizontalBorder((columnThreeWhitespace / 2), outputChar);	// FIXME: Had to hard code this for alignment
+		cout << "\t\t" << "$" << setprecision(2) << fixed << totalInterest;
 		// Print column three output, fixed to 2 decimal places
-		cout << "$" << setprecision(2) << fixed << endBalance;
+		cout << "\t\t\t" << "$" << setprecision(2) << fixed << endBalance;
 		cout << endl;
 	}
 	return;			// clear the stack even though return type is void

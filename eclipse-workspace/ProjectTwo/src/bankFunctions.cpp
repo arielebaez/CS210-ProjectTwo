@@ -11,6 +11,7 @@
 #include <string>				// C++ string class library
 #include <stdlib.h>
 #include <iomanip>				// set precision for numerical calculation output
+#include <memory>
 #include "Investment.h"
 
 /*
@@ -451,7 +452,7 @@ void printOptions() {
  * amounts, interest rates, and lengths of time to see how increases and decreases
  * impact their investment growth.
  */
-void investmentSimulation(Investment& investment) {
+void investmentSimulation(Investment& investment, std::shared_ptr<double> investmentAmount) {
 
 	bool validEntry;			// flag to drive exception handling
 	string userEntryAsString;	// store user input to convert to double

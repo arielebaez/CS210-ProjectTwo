@@ -32,15 +32,21 @@ int main() {
 	 *  of memory leaks.  Smart pointers are used to make sure that an object is deleted if it
 	 *  is no longer used.  Smart pointers are wrappers that eliminate the need for
 	 *  explicitly using 'new' and 'delete' keywords, which are handled automatically.
-	 *  Unique pointers are used here as they are the preferred type of smart pointer.
-	 *  They are a scope pointer- once the pointer is out of scope it is automatically deleted.
+	 *  While unique pointers are the preferred type of smart pointer, shared pointers
+	 *  are used here as multiple references are created- (1) initially during variable declaration
+	 *  and (2) at function call (i.e. the local argument references the same value in memory).
+	 *  Once the pointer is out of scope it is automatically deleted.
+	 *  For shared pointers, scope dies when the reference count equals 0.
+	 *  Here reference count will hit 1 during initial variable creation and spike to 2 during
+	 *  the call to investmentSimulation(), drop back to 1 when investmentSimulation()
+	 *  returns, and then finally drop to 0 when main() returns.
 	 *  (SMART POINTERS in C++ https://www.youtube.com/watch?v=UOB7-B2MfwA)
 	 */
 
 	// Open the program with an empty snapshot
 	printInvestmentSnapshot();
 	// Capture user input for amounts and instantiate object
-	unique_ptr<double> investmentAmount(new double(inputInvestment("Enter initial investment amount: ")));
+	shared_ptr<double> investmentAmount(new double(inputInvestment("Enter initial investment amount: ")));
 	unique_ptr<double> interestRate(new double(inputInterestRate("Enter rate of interest: ")));
 	unique_ptr<double> numberYears(new double(inputNumberYears("Enter investment duration (in years): ")));
 	unique_ptr<double> depositAmount(new double(grabDepositAmout()));
@@ -52,8 +58,8 @@ int main() {
 	cout << endl;
 	printGrowth(myInvestment, true);
 	cout << endl << endl << endl;
-	// Display an options menu, lop through user actions until user opts to quit
-	investmentSimulation(myInvestment);
+	// Display an options menu, loop through user actions until user opts to quit
+	investmentSimulation(myInvestment, investmentAmount);
 	cout << endl << "Goodbye.";
 	return 0;
 }

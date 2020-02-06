@@ -228,9 +228,9 @@ double grabDepositAmout() {
  * Function to print horizontal borders.  Loop through the length
  * given and print the character given for that many horizontal columns.
  */
-void printHorizontalBorder(int length, char printChar) {
-	for (int i = 0; i < length; ++i) {
-			cout << printChar;
+void printHorizontalBorder(int t_length, char t_printChar) {
+	for (int i = 0; i < t_length; ++i) {
+			cout << t_printChar;
 		}
 	return;
 }
@@ -264,7 +264,7 @@ void printInvestmentSnapshot() {
 	return;
 }
 
-void printInvestmentSnapshot(Investment& investment) {
+void printInvestmentSnapshot(Investment& t_investment) {
 	const int MENU_WIDTH = 35;			// Column width of the menu
 	string menuTitle = "Data Input";	// menu title
 	char menuChar = '*';
@@ -274,10 +274,10 @@ void printInvestmentSnapshot(Investment& investment) {
 	cout << " " << menuTitle << " ";
 	printHorizontalBorder((((MENU_WIDTH - menuTitle.length()) / 2)), menuChar);
 	cout << endl;
-	cout << "Initial Investment Amount: $" << investment.getInvestmentAmount() << endl;
-	cout << "Monthly Deposit: $" << investment.getMonthlyDeposit() << endl;
-	cout << "Annual Interest: " << investment.getInterestRate() << "%" << endl;
-	cout << "Number of Years: " << investment.getNumberYears() << endl;
+	cout << "Initial Investment Amount: $" << t_investment.getInvestmentAmount() << endl;
+	cout << "Monthly Deposit: $" << t_investment.getMonthlyDeposit() << endl;
+	cout << "Annual Interest: " << t_investment.getInterestRate() << "%" << endl;
+	cout << "Number of Years: " << t_investment.getNumberYears() << endl;
 	system("pause");
 	return;
 }
@@ -293,13 +293,13 @@ void printInvestmentSnapshot(Investment& investment) {
  * and end balance may be off target for certain test cases.  This is a known bug.
  */
 
-void printGrowth(Investment& investment, bool withMonthly/* default is false */) {
+void printGrowth(Investment& t_investment, bool t_withMonthly/* default is false */) {
 	const int MENU_WIDTH = 75;
 	const double MONTHS_IN_YEAR = 12.00;
 	string menuTitleNoDeposit = "Balance and Interest - No Additional Deposits";
 	string menuTitleWithDeposits = "Balance and Interest - With Monthly Deposits";
 	string menuTitle;
-	if(withMonthly) {
+	if(t_withMonthly) {
 		menuTitle = menuTitleWithDeposits;
 	}
 	else {
@@ -333,25 +333,25 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 	cout << endl;
 	// Prior to calculating and outputting growth, level set investment amount
 	// to use as the beginning balance for the investment growth output.
-	double begBalance = investment.getInvestmentAmount();
+	double begBalance = t_investment.getInvestmentAmount();
 	// Loop through the number of years for the investment.
 	// For each year, calculate the interest earned, ending balance, and output results.
 	// Logic drives whether to include monthly deposits based on the flag
 	// passed during the function call.
-	for (int i = 0; i < investment.getNumberYears(); ++i) {
+	for (int i = 0; i < t_investment.getNumberYears(); ++i) {
 		int year = (i + 1);		// Add 1 to i for the appropriate year output display
-		double interestRate = investment.getInterestRate() / 100.00;
+		double interestRate = t_investment.getInterestRate() / 100.00;
 		double interestEarned;
 		double totalInterest;
 		double endBalance;
 		double monthEndBalance;
-		if(withMonthly) {		// Include monthly deposits in growth output
+		if(t_withMonthly) {		// Include monthly deposits in growth output
 			interestEarned = 0;
 			totalInterest = 0;
 			interestRate = interestRate / MONTHS_IN_YEAR;
 			for (int i = 0; i < MONTHS_IN_YEAR; ++i) {
 				// Assumes deposit is made at the beginning of the month per spec given
-				begBalance += investment.getMonthlyDeposit();
+				begBalance += t_investment.getMonthlyDeposit();
 				interestEarned = (begBalance * (1 + interestRate)) - begBalance;
 				monthEndBalance = begBalance + interestEarned;
 				begBalance = monthEndBalance;
@@ -361,7 +361,7 @@ void printGrowth(Investment& investment, bool withMonthly/* default is false */)
 		else {					// Do not include monthly deposits
 			totalInterest = (begBalance * (1 + interestRate)) - begBalance;
 		}
-		if(withMonthly) {
+		if(t_withMonthly) {
 			// The above loop sets the beginning balance to the end of period
 			// balance to start the next iteration.  This will set begBalance to
 			// the true end of year balance at loop exit.
@@ -411,9 +411,9 @@ void printOptions() {
  * amounts, interest rates, and lengths of time to see how increases and decreases
  * impact their investment growth.
  */
-void investmentSimulation	(Investment& investment, std::shared_ptr<double> investmentAmount,
-							std::shared_ptr<double> interestRate, std::shared_ptr<double> numberYears,
-							std::shared_ptr<double> depositAmount) {
+void investmentSimulation	(Investment& t_investment, std::shared_ptr<double> t_investmentAmount,
+							std::shared_ptr<double> t_interestRate, std::shared_ptr<double> t_numberYears,
+							std::shared_ptr<double> t_depositAmount) {
 
 	bool validEntry;			// flag to drive exception handling
 	string userEntryAsString;	// store user input to convert to double
@@ -460,42 +460,42 @@ void investmentSimulation	(Investment& investment, std::shared_ptr<double> inves
 			switch(userEntry) {
 				case 1:	// Change the investment amount
 					// Print the current Snapshot
-					printInvestmentSnapshot(investment);
-					*investmentAmount = inputInvestment("Enter new investment amount: ");
-					investment.setInvestmentAmount(*investmentAmount);
+					printInvestmentSnapshot(t_investment);
+					*t_investmentAmount = inputInvestment("Enter new investment amount: ");
+					t_investment.setInvestmentAmount(*t_investmentAmount);
 					// Print the new snapshot
-					printInvestmentSnapshot(investment);
+					printInvestmentSnapshot(t_investment);
 					break;		// if a case is executed, break out of the switch statement so other cases aren't executed
 				case 2:	// Change the deposit amount
 					// Print the current Snapshot
-					printInvestmentSnapshot(investment);
-					*depositAmount = inputDeposit("Enter new deposit amount: ");
-					investment.setMonthlyDeposit(*depositAmount);
+					printInvestmentSnapshot(t_investment);
+					*t_depositAmount = inputDeposit("Enter new deposit amount: ");
+					t_investment.setMonthlyDeposit(*t_depositAmount);
 					// Print the new snapshot
-					printInvestmentSnapshot(investment);
+					printInvestmentSnapshot(t_investment);
 					break;
 				case 3:	// Change the interest rate
 					// Print the current Snapshot
-					printInvestmentSnapshot(investment);
-					*interestRate = inputInterestRate("Enter new interest rate: ");
-					investment.setInterestRate(*interestRate);
+					printInvestmentSnapshot(t_investment);
+					*t_interestRate = inputInterestRate("Enter new interest rate: ");
+					t_investment.setInterestRate(*t_interestRate);
 					// Print the new snapshot
-					printInvestmentSnapshot(investment);
+					printInvestmentSnapshot(t_investment);
 					break;
 				case 4:	// Change the investment duration
 					// Print the current Snapshot
-					printInvestmentSnapshot(investment);
-					*numberYears = inputNumberYears("Enter new duration: ");
-					investment.setNumberYears(*numberYears);
+					printInvestmentSnapshot(t_investment);
+					*t_numberYears = inputNumberYears("Enter new duration: ");
+					t_investment.setNumberYears(*t_numberYears);
 					// Print the new snapshot
-					printInvestmentSnapshot(investment);
+					printInvestmentSnapshot(t_investment);
 					break;
 				case 5:
-					printGrowth(investment, false);
+					printGrowth(t_investment, false);
 					cout << endl << endl;
 					break;
 				case 6:
-					printGrowth(investment, true);
+					printGrowth(t_investment, true);
 					cout << endl << endl;
 					break;
 				default:		// path taken if no other cases are executed, this will capture choice to quit program
